@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Licenses for included components
+-------------------------------------------------------------------------------
+Flask
+
+Please refer to the following LICENSE file:
+https://github.com/pallets/flask/blob/main/LICENSE.rst
+-------------------------------------------------------------------------------
+Flask-MQTT
+
+Please refer to the following LICENSE file:
+https://github.com/stlehmann/Flask-MQTT/blob/master/LICENSE
+-------------------------------------------------------------------------------

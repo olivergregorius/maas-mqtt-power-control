@@ -1,0 +1,70 @@
+# Generated in accordance with https://github.com/maas/maas/blob/da08c8bd922b0ea37d1220b4b010e17168f9d28c/src/provisioningserver/drivers/power/webhook.py
+openapi: 3.0.3
+info:
+  title: MAAS MQTT power control
+  description: A REST interface for MAAS webhook for MQTT power control
+  version: 1.0.0
+security:
+  - BearerAuth: []
+paths:
+  /power-status/{deviceName}:
+    get:
+      summary: Returns the last received power status of the device
+      description: Returns the last received power status of the device
+      tags:
+        - Power Status
+      responses:
+        200:
+          $ref: '#/components/responses/DeviceStatusResponse'
+  /power-control/{deviceName}/on:
+    post:
+      summary: Triggers a power button push for the given device to switch it on
+      description: Triggers a power button push for the given device to switch it on
+      tags:
+        - Power Control
+      responses:
+        204:
+          description: OK
+  /power-control/{deviceName}/off:
+    post:
+      summary: Triggers a power button push for the given device to switch it off
+      description: Triggers a power button push for the given device to switch it off
+      tags:
+        - Power Control
+      responses:
+        204:
+          description: OK
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    DeviceStatusResponse:
+      description: Successful
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+            properties:
+              status:
+                type: string
+                enum:
+                  - running
+                  - stopped
+          examples:
+            Device Running:
+              $ref: '#/components/examples/DeviceRunning'
+            Device Stopped:
+              $ref: '#/components/examples/DeviceStopped'
+  examples:
+    DeviceRunning:
+      description: Device is running
+      value:
+        status: running
+    DeviceStopped:
+      description: Device is stopped
+      value:
+        status: stopped
