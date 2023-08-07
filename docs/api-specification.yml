@@ -7,15 +7,15 @@ info:
 security:
   - BearerAuth: []
 paths:
-  /power-status/{deviceName}:
+  /power-state/{deviceName}:
     get:
-      summary: Returns the last received power status of the device
-      description: Returns the last received power status of the device
+      summary: Returns the last received power state of the device
+      description: Returns the last received power state of the device
       tags:
-        - Power Status
+        - Power State
       responses:
         200:
-          $ref: '#/components/responses/DeviceStatusResponse'
+          $ref: '#/components/responses/DeviceStateResponse'
   /power-control/{deviceName}/on:
     post:
       summary: Triggers a power button push for the given device to switch it on
@@ -40,16 +40,16 @@ components:
       type: http
       scheme: bearer
   responses:
-    DeviceStatusResponse:
+    DeviceStateResponse:
       description: Successful
       content:
         application/json:
           schema:
             type: object
             required:
-              - status
+              - state
             properties:
-              status:
+              state:
                 type: string
                 enum:
                   - running
@@ -63,8 +63,8 @@ components:
     DeviceRunning:
       description: Device is running
       value:
-        status: running
+        state: running
     DeviceStopped:
       description: Device is stopped
       value:
-        status: stopped
+        state: stopped

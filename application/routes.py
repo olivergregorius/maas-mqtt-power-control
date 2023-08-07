@@ -5,7 +5,7 @@ import werkzeug.exceptions
 from flask import Blueprint, jsonify, Response
 from flask import current_app as app
 
-from .constants import CFG_MQTT_TOPIC_POWER_CONTROL, CFG_MQTT_TOPIC_POWER_STATUS
+from .constants import CFG_MQTT_TOPIC_POWER_CONTROL, CFG_MQTT_TOPIC_POWER_STATE
 from .data import Data
 from .util import Util
 
@@ -16,22 +16,22 @@ bp = Blueprint('routes', __name__)
 
 @utilities.mqtt.on_connect()
 def handle_connect(client, userdata, flags, rc):
-    utilities.mqtt.subscribe(utilities.config[CFG_MQTT_TOPIC_POWER_STATUS])
+    utilities.mqtt.subscribe(utilities.config[CFG_MQTT_TOPIC_POWER_STATE])
 
 
 @utilities.mqtt.on_message()
 def handle_message(client, userdata, message):
     payload = json.loads(message.payload.decode())
-    data.devices[payload['deviceName']] = payload['status']
+    data.devices[payload['deviceName']] = payload['state']
 
 
-@bp.get('/power-status/<device_name>')
-def get_power_status(device_name) -> Response:
-    app.logger.debug(f'GET /power-status/{device_name} called')
+@bp.get('/power-state/<device_name>')
+def get_power_state(device_name) -> Response:
+    app.logger.debug(f'GET /power-state/{device_name} called')
 
-    status = data.devices.get(device_name, 'unknown')
-    response = {'status': f'{status}'}
-    app.logger.debug(f'Reported status for {device_name}: {status}')
+    state = data.devices.get(device_name, 'unknown')
+    response = {'state': f'{state}'}
+    app.logger.debug(f'Reported state for {device_name}: {state}')
 
     return jsonify(response)
 
